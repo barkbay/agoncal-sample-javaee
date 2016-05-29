@@ -1,0 +1,122 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "topbooks-example",
+    "annotations": {
+      "description": "TopBooks service in Wildfly swarm with Kubernetes example",
+      "tags": "wildfly, topbooks",
+      "iconClass": "icon-wildfly"
+    }
+  },
+  "labels": {
+    "template": "topbooks-example"
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${NAME}"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "annotations": {
+          "description": "Defines how to deploy the application server"
+        }
+       },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "recreateParams": {}
+          },
+          "triggers": [
+            {
+              "type": "ConfigChange"
+            }
+          ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}",
+            "labels": {
+              "name": "${NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "topbooks",
+                "image": "barkbay/topbooks:latest",
+                "ports": [
+                  {
+                    "containerPort": 8080
+                  }
+                ],
+                "readinessProbe": {
+                  "timeoutSeconds": 5,
+                  "initialDelaySeconds": 5,
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080
+                  }
+                },
+                "livenessProbe": {
+                    "timeoutSeconds": 5,
+                    "initialDelaySeconds": 30,
+                    "httpGet": {
+                        "path": "/",
+                        "port": 8080
+                    }
+                },
+                "env": [],
+                "resources": {
+            		    "limits": {
+            			  "memory": "${MEMORY_LIMIT}"
+            		    }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "required": true,
+      "value": "topcd-example"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "description": "Maximum amount of memory the topbooks container can use.",
+      "value": "32Mi"
+    }
+  ]
+}
