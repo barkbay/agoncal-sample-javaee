@@ -10,15 +10,23 @@ public class ServiceRegistry
 
    private static Logger logger = Logger.getLogger(ServiceRegistry.class.getName());
 
-   private static String[] topBooksServiceURLs = {
+   private static String[] defaultTopBooksServiceURLs = {
             "http://localhost:8080/topbooks",
             "http://localhost:8082/topbooks",
             "http://docker.local:8082/topbooks"};
 
-   private static String[] topCDsServiceURLs = {
+   private static String[] topBooksServiceURLs = System.getenv("TOPBOOKS_URL") != null
+                                                 ? new String[] { System.getenv("TOPBOOKS_URL") }
+                                                 : defaultTopBooksServiceURLs;
+
+   private static String[] defaultTopCDsServiceURLs = {
             "http://localhost:8080/topcds",
             "http://localhost:8081/topcds",
             "http://docker.local:8081/topcds"};
+
+   private static String[] topCDsServiceURLs = System.getenv("TOPCDS_URL") != null
+                                               ? new String[] { System.getenv("TOPCDS_URL") }
+                                               : defaultTopCDsServiceURLs;
 
    public static String getTopBooksServiceURL()
    {
