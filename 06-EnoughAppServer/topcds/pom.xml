@@ -41,7 +41,7 @@
                         <artifactId>wildfly-swarm-plugin</artifactId>
                         <configuration>
                             <properties>
-                                <swarm.http.port>8081</swarm.http.port>
+                                <swarm.http.port>8080</swarm.http.port>
                                 <swarm.context.path>/topcds</swarm.context.path>
                             </properties>
                         </configuration>
@@ -66,7 +66,7 @@
                         <configuration>
                             <bundleDependencies>false</bundleDependencies>
                             <properties>
-                                <swarm.http.port>8081</swarm.http.port>
+                                <swarm.http.port>8080</swarm.http.port>
                                 <swarm.context.path>/topcds</swarm.context.path>
                             </properties>
                         </configuration>
@@ -94,7 +94,7 @@
                         <artifactId>wildfly-swarm-plugin</artifactId>
                         <configuration>
                             <properties>
-                                <swarm.http.port>8081</swarm.http.port>
+                                <swarm.http.port>8080</swarm.http.port>
                                 <swarm.context.path>/topcds</swarm.context.path>
                             </properties>
                         </configuration>
@@ -123,7 +123,7 @@
                                     <build>
                                         <from>jboss/base-jdk:8</from>
                                         <ports>
-                                            <port>8081</port>
+                                            <port>8080</port>
                                         </ports>
                                         <entryPoint>
                                             <exec>
